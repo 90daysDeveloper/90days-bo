@@ -1,0 +1,59 @@
+.sidemenu{
+  display: flex;
+  flex-direction:column;
+
+  color:white;
+  background-color: var(--90-primary);
+
+  float:left;
+  position:fixed;
+  z-index:1;
+  top:0;
+  left:0;
+  bottom:0;
+  padding: .5rem;
+
+  transition: 0.3s ease;
+}
+
+.collapsed-icon{
+  position: absolute;
+  bottom:0;
+  padding:0.75rem;
+
+  color:white;
+
+  transition: 0.2s linear;
+}
+
+.rotate-180{
+  transform: rotate(180deg);
+  transition: 0.2s linear;
+}
+
+.link{
+  display: flex;
+  align-items: center;
+
+  cursor: pointer;
+  position: relative;
+  font-weight: 400;
+  user-select: none;
+
+  margin: 0.1rem 0;
+  padding: 0.4rem;
+  border-bottom: 0.25rem;
+  height: 3rem;
+  border-radius: 10px;
+
+  color: white;
+  text-decoration: none;
+}
+
+.link:hover{
+  background-color: var(--90-primary-light);
+}
+
+.link.active{
+  background-color: var(--90-primary-dark);
+}

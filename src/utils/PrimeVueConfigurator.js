@@ -31,6 +31,7 @@ import DataView from "primevue/dataview";
 import DataViewLayoutOptions from "primevue/dataviewlayoutoptions";
 import Dialog from "primevue/dialog";
 import Divider from "primevue/divider";
+import Dock from "primevue/dock";
 import Dropdown from "primevue/dropdown";
 import Editor from "primevue/editor";
 import Fieldset from "primevue/fieldset";
@@ -241,6 +242,7 @@ class PrimeVueConfigurator {
     app.component("DataViewLayoutOptions", DataViewLayoutOptions);
     app.component("Dialog", Dialog);
     app.component("Divider", Divider);
+    app.component("Dock", Dock);
     app.component("Dropdown", Dropdown);
     app.component("Editor", Editor);
     app.component("Fieldset", Fieldset);
