@@ -2,11 +2,42 @@
   <div class="wrapper">
     <h1>{{ titoloPagina }}</h1>
     <div class="grid ">
-      <div class="col-12">
+      <div class="col-3 ">
+        <h2>Partecipanti selezionati</h2>
+        <div class="flex flex-wrap justify-content-between ">
+          <Card v-for="partecipante in selectedItems" :key="partecipante.id"
+            class="w-5 h-8rem mb-4 m-0 p-0 bg-gray-700 ">
+            <template #content>
+              <h4 class="m-0 text-white">{{ partecipante.nome }} {{ partecipante.cognome }}</h4>
+              <p class="m-0 mb-2 text-xs text-gray-300">{{ partecipante.email }}</p>
+              <p class="m-0 text-gray-300">{{ new Date(partecipante.date_created).toLocaleDateString('it-IT') }}</p>
+            </template>
+          </Card>
+        </div>
+        <div v-for="partecipante in selectedItems" :key="partecipante.id">
+          <div v-if="partecipante.gruppo" class="bg-yellow-500 text-gray-100 py-1 px-2 mb-2">
+            <span>{{ partecipante.nome }} ha gia un gruppo!</span>
+          </div>
+        </div>
+        <Card v-if="selectedItems.length >= 4" class="bg-gray-700 mt-4">
+          <template #content>
+            <div class="flex flex-column">
+              <div class="flex flex-column"><label class="text-gray-100">Seleziona un gruppo</label>
+                <Dropdown :options="gruppoOptions" optionLabel="nome" v-model="gruppoSelected">
+                </Dropdown>>
+              </div>
+              <div class="flex justify-content-end">
+                <Button @click="assegnaAGruppo" :loading="loading" label="Assegna al Gruppo"></Button>
+              </div>
+            </div>
+          </template>
+        </Card>
+      </div>
+      <div class="col-9">
         <DataTable ref="dt" :value="data" responsiveLayout="scroll" stripedRows :paginator="true" :rows="10"
           paginatorTemplate=" FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink" removableSort
           :loading="loading" v-model:filters="filters" filterDisplay="menu"
-          :globalFilterFields="['nome', 'cognome', 'gruppo', 'email', 'codice']">
+          :globalFilterFields="['nome', 'cognome', 'gruppo', 'email', 'codice']" v-model:selection="selectedItems">
           <template #loading>
             <i class="pi pi-spin pi-spinner text-8xl text-purple-100"></i>
           </template>
@@ -29,6 +60,7 @@
               </div>
             </div>
           </template>
+          <Column selectionMode="multiple" headerStyle="width: 3em"></Column>
           <Column v-for="(col, index) of selectedColumns" :field="col.field" :header="col.field"
             :key="col.field + '_' + index" :sortable="true">
             <template #filter="{ filterModel }">
@@ -164,6 +196,34 @@ const filters = ref({
   'pubblico': { value: null, matchMode: FilterMatchMode.EQUALS },
   'uid': { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] }
 });
+
+
+const selectedItems = ref([])
+
+const gruppoOptions = ref([])
+const gruppoSelected = ref()
+function getGruppi() {
+  service.leggiGruppi().then(res => gruppoOptions.value = res.data)
+}
+
+function assegnaAGruppo() {
+  loading.value = true
+  selectedItems.value.forEach(partecipante => {
+    partecipante.gruppo = gruppoSelected.value.nome
+    partecipante.group_id = gruppoSelected.value.id
+    service.modificaUtenti(partecipante)
+      .then(res => console.log('modificaUtenti then => ', res))
+      .catch(err => console.log('modificaUtenti catch => ', err))
+      .finally(() => {
+        loading.value = false
+        selectedItems.value.splice(0)
+        getData()
+        populateSelectedColumns()
+      })
+  })
+}
+
+getGruppi()
 
 getData()
 populateSelectedColumns()
