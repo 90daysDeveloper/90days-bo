@@ -10,6 +10,10 @@ const routes = [
     component: () => import("@/views/Utenti.vue"),
   },
   {
+    path: "/Gruppi",
+    component: () => import("@/views/Gruppi.vue"),
+  },
+  {
     path: "/Helper",
     component: () => import("@/views/Helper.vue"),
   },

@@ -29,6 +29,11 @@ const items = [
     to: '/Utenti'
   },
   {
+    label: "Gruppi",
+    icon: "pi-users",
+    to: "/Gruppi"
+  },
+  {
     label: "Helper",
     icon: "pi-flag",
     to: "/Helper",

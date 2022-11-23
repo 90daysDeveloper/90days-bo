@@ -48,15 +48,15 @@
                   @update:modelValue="onToggle" placeholder="Select Columns" style="width: 20em" />
               </div>
               <div>
-                <Button type="button" icon="pi pi-filter-slash" label="Clear" class="p-button-outlined"
-                  @click="clearFilter()" />
+                <Button :loading="loading" type="button" icon="pi pi-filter-slash" label="Clear"
+                  class="p-button-outlined" @click="clearFilter()" />
                 <span class="p-input-icon-left">
                   <i class="pi pi-search" />
                   <InputText v-model="filters['global'].value" placeholder="Keyword Search" />
                 </span>
               </div>
               <div style="text-align: left">
-                <Button icon="pi pi-external-link" label="Export" @click="exportCSV($event)" />
+                <Button :loading="loading" icon="pi pi-external-link" label="Export" @click="exportCSV($event)" />
               </div>
             </div>
           </template>
